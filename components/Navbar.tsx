@@ -9,14 +9,26 @@ interface NavbarProps {
   onOpenCart: () => void;
   onOpenWishlist: () => void;
   onGoHome: () => void;
+  onNavigate: (page: 'home' | 'shop' | 'about' | 'contact') => void;
+  currentPage: string;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, onSearch, onOpenCart, onOpenWishlist, onGoHome }) => {
+const Navbar: React.FC<NavbarProps> = ({ 
+  cartCount, 
+  wishlistCount, 
+  onSearch, 
+  onOpenCart, 
+  onOpenWishlist, 
+  onGoHome,
+  onNavigate,
+  currentPage
+}) => {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(query);
+    onNavigate('shop');
   };
 
   return (
@@ -24,12 +36,32 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, wishlistCount, onSearch, onO
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
         <div 
-          className="flex items-center cursor-pointer group"
-          onClick={onGoHome}
+          className="flex items-center cursor-pointer group shrink-0"
+          onClick={() => { onGoHome(); onNavigate('home'); }}
         >
           <span className="text-2xl font-black text-orange-500 tracking-tighter group-hover:scale-105 transition-transform">
             ONOS
           </span>
+        </div>
+
+        {/* Nav Links */}
+        <div className="hidden lg:flex items-center gap-6 ml-4">
+          {[
+            { id: 'home', label: 'Home' },
+            { id: 'shop', label: 'Shop' },
+            { id: 'about', label: 'About' },
+            { id: 'contact', label: 'Contact' },
+          ].map((link) => (
+            <button
+              key={link.id}
+              onClick={() => onNavigate(link.id as any)}
+              className={`text-xs font-black uppercase tracking-widest transition-colors ${
+                currentPage === link.id ? 'text-orange-500' : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
+              {link.label}
+            </button>
+          ))}
         </div>
 
         {/* Search Bar */}

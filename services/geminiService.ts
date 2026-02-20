@@ -2,10 +2,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Product } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+let aiInstance: GoogleGenAI | null = null;
+
+const getAi = () => {
+  if (!aiInstance) {
+    aiInstance = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+  }
+  return aiInstance;
+};
 
 export const getAIRecommendations = async (query: string, products: Product[]) => {
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `User is searching for: "${query}". 
@@ -43,6 +51,7 @@ export const getAIRecommendations = async (query: string, products: Product[]) =
 
 export const chatWithGemini = async (message: string, context: string) => {
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `You are a helpful e-commerce shopping assistant for ONOS. 

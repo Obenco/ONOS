@@ -11,6 +11,8 @@ interface FilterSidebarProps {
   minRating: number;
   setMinRating: React.Dispatch<React.SetStateAction<number>>;
   onClearAll: () => void;
+  onDownloadCatalog: () => void;
+  onUploadCatalog: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -22,8 +24,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   minRating,
   setMinRating,
   onClearAll,
+  onDownloadCatalog,
+  onUploadCatalog,
 }) => {
-  const brands = Array.from(new Set(products.map((p) => p.brand)));
+  const brands: string[] = Array.from(new Set(products.map((p) => p.brand)));
 
   const handleBrandChange = (brand: string) => {
     setSelectedBrands((prev) =>
@@ -41,6 +45,37 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         >
           Clear All
         </button>
+      </div>
+
+      {/* Data Management */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+        <h4 className="text-xs font-black text-gray-900 uppercase mb-4 border-b pb-2">Data Management</h4>
+        <div className="space-y-3">
+          <button
+            onClick={onDownloadCatalog}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white text-[10px] font-bold rounded uppercase hover:bg-gray-800 transition-colors"
+          >
+            <i className="fa-solid fa-download"></i>
+            Download Catalog
+          </button>
+          <div className="relative">
+            <input
+              type="file"
+              accept=".json"
+              onChange={onUploadCatalog}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              id="catalog-upload"
+            />
+            <label
+              htmlFor="catalog-upload"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 text-gray-700 text-[10px] font-bold rounded uppercase hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              <i className="fa-solid fa-upload"></i>
+              Upload Catalog
+            </label>
+          </div>
+          <p className="text-[9px] text-gray-400 italic">Download, edit JSON, and upload to update the store.</p>
+        </div>
       </div>
 
       {/* Brand Filter */}

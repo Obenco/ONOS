@@ -1,6 +1,6 @@
 {
   "name": "ONOS",
-  "description": "A high-performance e-commerce platform with AI-powered search, category browsing, and a seamless shopping experience.",
+  "description": "A comprehensive e-commerce website featuring a landing page, shop with AI search, about us, and contact sections.",
   "requestFramePermissions": [
     "camera",
     "microphone"
